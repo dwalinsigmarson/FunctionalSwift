@@ -37,11 +37,15 @@ enum List<A> : Sequence {
 	}
 	
 	func dropFirst(_ n: Int) -> List<A> {
+		if n == 0 {
+			return self
+		}
+		
 		switch self {
 			case .end:
 				return self
 			case .node(_, let tail):
-				return n - 1 > 0 ? tail.dropFirst(n - 1) : tail
+				return tail.dropFirst(n - 1)
 		}
 	}
 

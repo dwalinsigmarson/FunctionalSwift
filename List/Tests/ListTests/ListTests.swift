@@ -34,8 +34,8 @@ final class ListTests: XCTestCase {
 		let list01 = List<Int>([]).dropFirst(1)
 		XCTAssertEqual(list01.top, nil, "List should be empty")
 
-//		let list10 = List<Int>([1]).dropFirst(0)
-//		XCTAssertEqual(list10.top, 1, "List should be empty")
+		let list10 = List<Int>([1]).dropFirst(0)
+		XCTAssertEqual(list10.top, 1, "List should be empty")
 
 		let list11 = List<Int>([1]).dropFirst(1)
 		XCTAssertEqual(list11.top, nil, "List should be empty")
