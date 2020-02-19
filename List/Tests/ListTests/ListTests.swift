@@ -51,6 +51,14 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(listLong.dropFirst(4).top, "")
 	}
 
+	func testSharing() {
+		let list1 = List<SharingVerifier>([1, 2, 3, 4, 5].map{ SharingVerifier(num: $0) })
+		
+		let list2 = list1.dropFirst(3).add(SharingVerifier(num: 3)).add(SharingVerifier(num: 4))
+		
+		
+	}
+	
 	static var allTests = [
 		("testInit", testInitAddTop),
 		("testIteration", testIteration)
@@ -73,5 +81,13 @@ extension ListTests {
 		}
 		
 		return go(list, first)
+	}
+}
+
+class SharingVerifier {
+	var num: Int
+	
+	init(num: Int) {
+		self.num = num
 	}
 }
