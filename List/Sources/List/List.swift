@@ -12,19 +12,19 @@ enum List<A> : Sequence {
 	
 	var top: A? {
 		switch self {
-			case .end:
-				return nil
-			case .node(let head, _):
-				return head
+		case .end:
+			return nil
+		case .node(let head, _):
+			return head
 		}
 	}
 	
 	var tail: List<A> {
 		switch self {
-			case .end:
-				return self
-			case .node(_, let tail):
-				return tail
+		case .end:
+			return self
+		case .node(_, let tail):
+			return tail
 		}
 	}
 	
@@ -42,21 +42,21 @@ enum List<A> : Sequence {
 		}
 		
 		switch self {
-			case .end:
-				return self
-			case .node(_, let tail):
-				return tail.dropFirst(n - 1)
+		case .end:
+			return self
+		case .node(_, let tail):
+			return tail.dropFirst(n - 1)
 		}
 	}
 
 	func dropLast() -> List<A> {
 		switch self {
-			case .end:
-				return self
-			case .node(_, .end):
-				return .end
-			case .node(let n, let tail):
-				return .node(head: n, tail: tail.dropLast())
+		case .end:
+			return self
+		case .node(_, .end):
+			return .end
+		case .node(let n, let tail):
+			return .node(head: n, tail: tail.dropLast())
 		}
 	}
 	
@@ -131,10 +131,10 @@ extension List {
 extension List where A: AdditiveArithmetic {
 	func sum() -> A {
 		switch self {
-			case .end:
-				return .zero
-			case .node(let head, let tail):
-				return head + tail.sum()
+		case .end:
+			return .zero
+		case .node(let head, let tail):
+			return head + tail.sum()
 		}
 	}
 	
