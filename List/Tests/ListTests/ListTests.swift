@@ -51,9 +51,24 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(listLong.dropFirst(4).top, "")
 	}
 
+	func testDropWhile() {
+		let list3 = List<Int>([1,2,3,4,5]).drop { $0 < 3 }
+		let diffPosition5 = diffNumIn(list3, first: 3, last: 5)
+		XCTAssertNil(diffPosition5, "diff at num \(diffPosition5!)")
+		
+		let list1 = List<Int>([1,2,3,4,5]).drop { $0 < 5 }
+		let diffPosition1 = diffNumIn(list1, first: 5, last: 5)
+		XCTAssertNil(diffPosition1, "diff at num \(diffPosition1!)")
+
+		let list0 = List<Int>([1,2,3,4,5]).drop { $0 < 6 }
+		XCTAssertNil(list0.top)
+	}
+	
 	static var allTests = [
 		("testInit", testInitAddTop),
-		("testIteration", testIteration)
+		("testIteration", testIteration),
+		("testDropFirst", testDropFirst),
+		("testDropWhile", testDropWhile)
 	]
 }
 

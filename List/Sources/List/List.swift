@@ -49,6 +49,15 @@ enum List<A> : Sequence {
 		}
 	}
 
+	func drop(while predicate: (A) -> Bool) -> List<A> {
+		switch self {
+		case .end:
+			return self
+		case .node(let a, let tail):
+			return predicate(a) ? tail.drop(while: predicate) : self
+		}
+	}
+	
 	func dropLast() -> List<A> {
 		switch self {
 			case .end:
