@@ -98,6 +98,12 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(diff5, "diff at num \(diff5!)")
 	}
 	
+	func testAppend() {
+		let list = List<Int>([1,2,3]).append(list: List<Int>([4,5,6]))
+		let diff = diffNumIn(list, first: 1, last: 6)
+		XCTAssertNil(diff, "diff at num \(diff!)")
+	}
+	
 	static var allTests = [
 		("testInit", testInitAddTop),
 		("testIteration", testIteration),
@@ -107,6 +113,7 @@ final class ListTests: XCTestCase {
 		("testFoldLeft", testFoldLeft),
 		("testFoldRight", testFoldRight),
 		("testDropLastN", testDropLastN),
+		("testAppend", testAppend),
 	]
 }
 
