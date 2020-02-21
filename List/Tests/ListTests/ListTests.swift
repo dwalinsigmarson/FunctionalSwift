@@ -82,6 +82,22 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(diff, "diff at num \(diff!)")
 	}
 
+	func testDropLastN() {
+		let list3 = List<Int>([1,2,3,4,5]).dropLast(2)
+		let diff3 = diffNumIn(list3, first: 1, last: 3)
+		XCTAssertNil(diff3, "diff at num \(diff3!)")
+
+		let list0 = List<Int>([1,2,3,4,5]).dropLast(5)
+		XCTAssertNil(list0.top, "")
+
+		let list00 = List<Int>([1,2,3,4,5]).dropLast(6)
+		XCTAssertNil(list00.top, "")
+
+		let list5 = List<Int>([1,2,3,4,5]).dropLast(0)
+		let diff5 = diffNumIn(list5, first: 1, last: 5)
+		XCTAssertNil(diff5, "diff at num \(diff5!)")
+	}
+	
 	static var allTests = [
 		("testInit", testInitAddTop),
 		("testIteration", testIteration),
@@ -90,6 +106,7 @@ final class ListTests: XCTestCase {
 		("testDropLast", testDropLast),
 		("testFoldLeft", testFoldLeft),
 		("testFoldRight", testFoldRight),
+		("testDropLastN", testDropLastN),
 	]
 }
 

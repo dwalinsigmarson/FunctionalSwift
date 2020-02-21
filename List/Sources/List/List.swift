@@ -69,12 +69,26 @@ enum List<A> : Sequence {
 		}
 	}
 	
+	func dropLast(_ n: Int) -> List<A> {
+		let (_, resultList) = self.foldRight((0, .end)) { (elem, accum) -> (Int, List<A>) in
+			let (depth, list) = accum
+
+			if (depth < n) {
+				return (depth + 1, .end)
+			} else {
+				return (depth, .node(head: elem, tail: list))
+			}
+		}
+		
+		return resultList
+	}
+	
 	func foldLeft<B>(_ b: B, f: (A, B) -> B) -> B {
 		switch self {
 		case .end:
-			  return b
+			return b
 		case .node(let a, let tail):
-			  return tail.foldLeft(f(a, b), f: f)
+			return tail.foldLeft(f(a, b), f: f)
 		}
 	}
 	
