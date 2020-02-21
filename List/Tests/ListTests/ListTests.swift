@@ -123,6 +123,20 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(list0.top, "")
 	}
 	
+	func testReversed() {
+		let list5 = List<Int>([5,4,3,2,1]).reversed()
+		let diff5 = diffNumIn(list5, first: 1, last: 5)
+		XCTAssertNil(diff5, "diff at num \(diff5!)")
+
+		let list1 = List<Int>([1]).reversed()
+		let diff1 = diffNumIn(list1, first: 1, last: 1)
+		XCTAssertNil(diff1, "diff at num \(diff1!)")
+
+		let list0 = List<Int>([]).reversed()
+		XCTAssertNil(list0.top, "")
+	}
+	
+
 	static var allTests = [
 		("testInit", testInitAddTop),
 		("testIteration", testIteration),
@@ -133,7 +147,9 @@ final class ListTests: XCTestCase {
 		("testFoldRight", testFoldRight),
 		("testDropLastN", testDropLastN),
 		("testAppend", testAppend),
-		("testLength", testLength)
+		("testLength", testLength),
+		("testCopy", testCopy),
+		("testReversed", testReversed)
 	]
 }
 
