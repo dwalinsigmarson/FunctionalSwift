@@ -176,4 +176,16 @@ extension ListTests {
 		
 		return go(list, first)
 	}
+
+	// In general:
+	// function that receives method with type like foldRight(_:_)
+	//	func verifyFoldRights<A, B>(name: String, method: (List<A>) -> (B, (A, B) -> B) -> List<A>) -> List<A> {
+	//	}
+	//
+	// In this case
+	func verifyFoldRights(name: String, method: (List<Int>) -> (List<Int>, (Int, List<Int>) -> List<Int>) -> List<Int>) {
+		let list = method(List<Int>([1,2,3,4,5]))(.end, List<Int>.node)
+		let diff = diffNumIn(list, first: 1, last: 5)
+		XCTAssertNil(diff, "diff at num \(diff!)")
+	}
 }
