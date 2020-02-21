@@ -110,6 +110,19 @@ final class ListTests: XCTestCase {
 		XCTAssertEqual(5, List<Int>([1,2,3,4,5]).length, "")
 	}
 	
+	func testCopy() {
+		let list5 = List<Int>([1,2,3,4,5]).copy()
+		let diff5 = diffNumIn(list5, first: 1, last: 5)
+		XCTAssertNil(diff5, "diff at num \(diff5!)")
+
+		let list1 = List<Int>([1]).copy()
+		let diff1 = diffNumIn(list1, first: 1, last: 1)
+		XCTAssertNil(diff1, "diff at num \(diff1!)")
+
+		let list0 = List<Int>([]).copy()
+		XCTAssertNil(list0.top, "")
+	}
+	
 	static var allTests = [
 		("testInit", testInitAddTop),
 		("testIteration", testIteration),
