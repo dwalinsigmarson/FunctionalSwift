@@ -64,6 +64,12 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(list0.top)
 	}
 	
+	func testDropLast() {
+		let list = List<Int>([1,2,3,4,5]).dropLast().dropLast()
+		let diff = diffNumIn(list, first: 1, last: 3)
+		XCTAssertNil(diff, "diff at num \(diff!)")
+	}
+
 	func testFoldLeft() {
 		let list = List<Int>([5,4,3,2,1]).foldLeft(.end, f: List<Int>.node)
 		let diff = diffNumIn(list, first: 1, last: 5)
@@ -81,8 +87,9 @@ final class ListTests: XCTestCase {
 		("testIteration", testIteration),
 		("testDropFirst", testDropFirst),
 		("testDropWhile", testDropWhile),
+		("testDropLast", testDropLast),
 		("testFoldLeft", testFoldLeft),
-		("testFoldRight", testFoldRight)
+		("testFoldRight", testFoldRight),
 	]
 }
 
