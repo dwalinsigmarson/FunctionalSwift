@@ -153,15 +153,6 @@ extension List {
 
 extension List where A: AdditiveArithmetic {
 	func sum() -> A {
-		switch self {
-		case .end:
-			return .zero
-		case .node(let head, let tail):
-			return head + tail.sum()
-		}
-	}
-	
-	func sum2() -> A {
-		return self.foldRight(A.zero) { $0 + $1 }
+		return self.foldLeft(A.zero) { $0 + $1 }
 	}
 }

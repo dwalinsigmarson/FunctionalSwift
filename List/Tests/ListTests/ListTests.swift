@@ -136,7 +136,12 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(list0.top, "")
 	}
 	
-
+	func testSum() {
+		XCTAssertEqual(0, List<Int>([]).sum(), "")
+		XCTAssertEqual(5, List<Int>([5]).sum(), "")
+		XCTAssertEqual(15, List<Int>([1,2,3,4,5]).sum(), "")
+	}
+	
 	static var allTests = [
 		("testInit", testInitAddTop),
 		("testIteration", testIteration),
@@ -149,7 +154,8 @@ final class ListTests: XCTestCase {
 		("testAppend", testAppend),
 		("testLength", testLength),
 		("testCopy", testCopy),
-		("testReversed", testReversed)
+		("testReversed", testReversed),
+		("testSum", testSum)
 	]
 }
 
