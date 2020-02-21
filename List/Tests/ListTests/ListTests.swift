@@ -104,6 +104,12 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(diff, "diff at num \(diff!)")
 	}
 	
+	func testLength() {
+		XCTAssertEqual(0, List<Int>([]).length, "")
+		XCTAssertEqual(1, List<Int>([1]).length, "")
+		XCTAssertEqual(5, List<Int>([1,2,3,4,5]).length, "")
+	}
+	
 	static var allTests = [
 		("testInit", testInitAddTop),
 		("testIteration", testIteration),
@@ -114,6 +120,7 @@ final class ListTests: XCTestCase {
 		("testFoldRight", testFoldRight),
 		("testDropLastN", testDropLastN),
 		("testAppend", testAppend),
+		("testLength", testLength)
 	]
 }
 

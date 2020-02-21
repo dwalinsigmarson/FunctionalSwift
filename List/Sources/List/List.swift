@@ -102,8 +102,8 @@ enum List<A> : Sequence {
 		}
 	}
 
-	func length() -> Int {
-		self.foldRight(0) { $1 + 1 }
+	var length: Int {
+		self.foldLeft(0) { $1 + 1 }
 	}
 	
 	func copy() -> List<A> {
