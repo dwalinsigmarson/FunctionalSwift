@@ -82,11 +82,11 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(diff, "diff at num \(diff!)")
 	}
 
-	func testFoldRights() {
-		let diff1 = verifyFoldRights(name: "FoldRight", method: List<Int>.foldRight)
+	func testOtherFolds() {
+		let diff1 = verifyFolds(withSource:List<Int>([1,2,3,4,5]), expectedResult: 1...5, method: List<Int>.foldRightExplicit)
 		XCTAssertNil(diff1, "diff at num \(diff1!)")
 
-		let diff2 = verifyFoldRights(name: "FoldRightExplicit", method: List<Int>.foldRightExplicit)
+		let diff2 = verifyFolds(withSource:List<Int>([5,4,3,2,1]), expectedResult: 1...5, method: List<Int>.foldLeftViaFoldRifgt)
 		XCTAssertNil(diff2, "diff at num \(diff2!)")
 	}
 	
@@ -158,7 +158,7 @@ final class ListTests: XCTestCase {
 		("testDropLast", testDropLast),
 		("testFoldLeft", testFoldLeft),
 		("testFoldRight", testFoldRight),
-		("testFoldRights", testFoldRights),
+		("testOtherFolds", testOtherFolds),
 		("testDropLastN", testDropLastN),
 		("testAppend", testAppend),
 		("testLength", testLength),
@@ -192,8 +192,8 @@ extension ListTests {
 	//	}
 	//
 	// In this case
-	func verifyFoldRights(name: String, method: (List<Int>) -> (List<Int>, (Int, List<Int>) -> List<Int>) -> List<Int>) -> Int? {
-		let list = method(List<Int>([1,2,3,4,5]))(.end, List<Int>.node)
-		return diffNumIn(list, first: 1, last: 5)
+	func verifyFolds(withSource source: List<Int>, expectedResult: ClosedRange<Int>, method: (List<Int>) -> (List<Int>, @escaping (Int, List<Int>) -> List<Int>) -> List<Int>) -> Int? {
+		let list = method(source)(.end, List<Int>.node)
+		return diffNumIn(list, first: expectedResult.lowerBound, last: expectedResult.upperBound)
 	}
 }
