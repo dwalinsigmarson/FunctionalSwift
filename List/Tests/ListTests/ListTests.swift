@@ -82,6 +82,14 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(diff, "diff at num \(diff!)")
 	}
 
+	func testFoldRights() {
+		let diff1 = verifyFoldRights(name: "FoldRight", method: List<Int>.foldRight)
+		XCTAssertNil(diff1, "diff at num \(diff1!)")
+
+		let diff2 = verifyFoldRights(name: "FoldRightExplicit", method: List<Int>.foldRightExplicit)
+		XCTAssertNil(diff2, "diff at num \(diff2!)")
+	}
+	
 	func testDropLastN() {
 		let list3 = List<Int>([1,2,3,4,5]).dropLast(2)
 		let diff3 = diffNumIn(list3, first: 1, last: 3)
@@ -150,6 +158,7 @@ final class ListTests: XCTestCase {
 		("testDropLast", testDropLast),
 		("testFoldLeft", testFoldLeft),
 		("testFoldRight", testFoldRight),
+		("testFoldRights", testFoldRights),
 		("testDropLastN", testDropLastN),
 		("testAppend", testAppend),
 		("testLength", testLength),
@@ -183,9 +192,8 @@ extension ListTests {
 	//	}
 	//
 	// In this case
-	func verifyFoldRights(name: String, method: (List<Int>) -> (List<Int>, (Int, List<Int>) -> List<Int>) -> List<Int>) {
+	func verifyFoldRights(name: String, method: (List<Int>) -> (List<Int>, (Int, List<Int>) -> List<Int>) -> List<Int>) -> Int? {
 		let list = method(List<Int>([1,2,3,4,5]))(.end, List<Int>.node)
-		let diff = diffNumIn(list, first: 1, last: 5)
-		XCTAssertNil(diff, "diff at num \(diff!)")
+		return diffNumIn(list, first: 1, last: 5)
 	}
 }
