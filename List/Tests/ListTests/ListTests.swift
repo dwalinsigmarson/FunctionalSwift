@@ -144,6 +144,12 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(list0.top, "")
 	}
 	
+	func testMap() {
+		let list = List<String>(["a", "aa", "aaa", "aaaa"]).map{ $0.count }
+		let diff = diffNumIn(list, first: 1, last: 4)
+		XCTAssertNil(diff, "diff at num \(diff!)")
+	}
+	
 	func testSum() {
 		XCTAssertEqual(0, List<Int>([]).sum(), "")
 		XCTAssertEqual(5, List<Int>([5]).sum(), "")
@@ -164,6 +170,7 @@ final class ListTests: XCTestCase {
 		("testLength", testLength),
 		("testCopy", testCopy),
 		("testReversed", testReversed),
+		("testMap", testMap),
 		("testSum", testSum)
 	]
 }

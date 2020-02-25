@@ -114,6 +114,11 @@ enum List<A> : Sequence {
 		self.foldLeft(Self.end, f: Self.node)
 	}
 
+	func map<B>(f: (A) -> B) -> List<B> {
+		self.foldRight(List<B>.end) { (a: A, tail: List<B>) -> List<B> in
+			List<B>.node(head: f(a), tail:tail)
+		}
+	}
 }
 
 struct ListIterator<A> : IteratorProtocol {
