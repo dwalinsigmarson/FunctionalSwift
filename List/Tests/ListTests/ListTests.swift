@@ -150,6 +150,30 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(diff, "diff at num \(diff!)")
 	}
 	
+	func testFlatMap() {
+		let list: List<Character> = List<(Character, Int)>([("a", 3), ("b", 2), ("c", 3), ("d", 4)]).flatMap {
+			let (char, num) = $0
+			return List<Character>([Character](repeating: char, count: num))
+		}
+		
+		let expectedList = List<Character>(["a", "a", "a"])
+		
+		var resultIterator = list.makeIterator()
+		var expectedIterator = expectedList.makeIterator()
+		
+		var resultElemOpt = resultIterator.next()
+		var expectedElemOpt = expectedIterator.next()
+		
+		while let resultElem = resultElemOpt, let expectedElem = expectedElemOpt {
+			XCTAssertEqual(resultElem, expectedElem)
+			resultElemOpt = resultIterator.next()
+			expectedElemOpt = expectedIterator.next()
+		}
+		
+		XCTAssertNil(resultElemOpt)
+		XCTAssertNil(expectedElemOpt)
+	}
+	
 	func testSum() {
 		XCTAssertEqual(0, List<Int>([]).sum(), "")
 		XCTAssertEqual(5, List<Int>([5]).sum(), "")

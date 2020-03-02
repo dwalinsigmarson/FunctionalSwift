@@ -119,6 +119,10 @@ enum List<A> : Sequence {
 			List<B>.node(head: f(a), tail:tail)
 		}
 	}
+	
+	func flatMap<B>(f: (A)->List<B>) -> List<B> {
+		return f(self.top!)
+	}
 }
 
 struct ListIterator<A> : IteratorProtocol {
