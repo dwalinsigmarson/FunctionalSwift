@@ -1,3 +1,10 @@
+//
+//  List.swift
+//  FunctionalSwift
+//
+//  Created by Dmytro Davydenko on 2/18/20.
+//  Copyright © 2020 Dmytro Davydenko. All rights reserved.
+
 enum List<A> : Sequence {
 	
 	case end

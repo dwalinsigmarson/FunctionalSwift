@@ -1,3 +1,10 @@
+//
+//  ListTest.swift
+//  FunctionalSwift
+//
+//  Created by Dmytro Davydenko on 2/18/20.
+//  Copyright © 2020 Dmytro Davydenko. All rights reserved.
+
 import XCTest
 @testable import List
 
