@@ -99,7 +99,7 @@ enum List<A> : Sequence {
 	/// list parameter is shared with the result, self is copied
 	func append(list: List<A>) -> List<A> {
 		self.foldRight(list) { (elem, list) -> List<A> in
-			list.add(elem)
+			list.add(elem) // .node(head: elem, tail: list)
 		}
 	}
 
