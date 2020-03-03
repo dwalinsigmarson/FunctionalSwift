@@ -117,8 +117,7 @@ enum List<A> : Sequence {
 
 	func map<B>(f: (A) -> B) -> List<B> {
 		self.foldRight(List<B>.end) { (a: A, list: List<B>) -> List<B> in
-//			List<B>.node(head: f(a), tail:list)
-			list.add(f(a))
+			list.add(f(a)) //	List<B>.node(head: f(a), tail:list)
 		}
 	}
 	
