@@ -156,7 +156,7 @@ final class ListTests: XCTestCase {
 			return List<Character>([Character](repeating: char, count: num))
 		}
 		
-		let expectedList = List<Character>(["a", "a", "a"])
+		let expectedList = List<Character>(["a", "a", "a", "b", "b", "c", "c", "c", "d", "d", "d", "d"])
 		
 		var resultIterator = list.makeIterator()
 		var expectedIterator = expectedList.makeIterator()
@@ -170,8 +170,8 @@ final class ListTests: XCTestCase {
 			expectedElemOpt = expectedIterator.next()
 		}
 		
-		XCTAssertNil(resultElemOpt)
-		XCTAssertNil(expectedElemOpt)
+		XCTAssertNil(resultElemOpt, "Result is longer than expected")
+		XCTAssertNil(expectedElemOpt, "Result is shorter than expected")
 	}
 	
 	func testSum() {
