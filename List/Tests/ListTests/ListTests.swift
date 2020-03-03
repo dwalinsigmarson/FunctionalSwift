@@ -173,7 +173,31 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(resultElemOpt, "Result is longer than expected")
 		XCTAssertNil(expectedElemOpt, "Result is shorter than expected")
 	}
-	
+
+	func testFlatMapViaFoldLeft() {
+		let list: List<Character> = List<(Character, Int)>([("a", 3), ("b", 2), ("c", 3), ("d", 4)]).flatMapViaFoldLeft {
+			let (char, num) = $0
+			return List<Character>([Character](repeating: char, count: num))
+		}
+		
+		let expectedList = List<Character>(["a", "a", "a", "b", "b", "c", "c", "c", "d", "d", "d", "d"])
+		
+		var resultIterator = list.makeIterator()
+		var expectedIterator = expectedList.makeIterator()
+		
+		var resultElemOpt = resultIterator.next()
+		var expectedElemOpt = expectedIterator.next()
+		
+		while let resultElem = resultElemOpt, let expectedElem = expectedElemOpt {
+			XCTAssertEqual(resultElem, expectedElem)
+			resultElemOpt = resultIterator.next()
+			expectedElemOpt = expectedIterator.next()
+		}
+		
+		XCTAssertNil(resultElemOpt, "Result is longer than expected")
+		XCTAssertNil(expectedElemOpt, "Result is shorter than expected")
+	}
+
 	func testSum() {
 		XCTAssertEqual(0, List<Int>([]).sum(), "")
 		XCTAssertEqual(5, List<Int>([5]).sum(), "")
@@ -195,7 +219,9 @@ final class ListTests: XCTestCase {
 		("testCopy", testCopy),
 		("testReversed", testReversed),
 		("testMap", testMap),
-		("testSum", testSum)
+		("testSum", testSum),
+		("testFlatMap", testFlatMap),
+		("testFlatMapViaFoldLeft", testFlatMapViaFoldLeft),
 	]
 }
 

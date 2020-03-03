@@ -161,6 +161,12 @@ extension List {
 			}
 		}(b)
 	}
+
+	func flatMapViaFoldLeft<B>(f: (A) -> List<B>) -> List<B> {
+		self.foldLeft(List<B>.end) { (a: A, list: List<B>) -> List<B> in
+			list.append(list: f(a))
+		}
+	}
 }
 
 extension List where A: AdditiveArithmetic {
