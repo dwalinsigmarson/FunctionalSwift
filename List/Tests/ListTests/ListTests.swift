@@ -176,6 +176,9 @@ final class ListTests: XCTestCase {
 		let list1 = List<Int>([11, 1, 11, 2, 11]).filter{ $0 < 10 }
 		let diff1 = diffNumIn(list1, first: 1, last: 2)
 		XCTAssertNil(diff1, "diff at num \(diff1!)")
+
+		let list2 = List<Int>([11, 11, 11]).filter{ $0 < 10 }
+		XCTAssertNil(list2.top)
 	}
 	
 	func testSum() {
@@ -201,6 +204,7 @@ final class ListTests: XCTestCase {
 		("testMap", testMap),
 		("testFlatMap", testFlatMap),
 		("testFlatMapViaFoldLeft", testFlatMapViaFoldLeft),
+		("testFilter", testFilter),
 		("testSum", testSum),
 	]
 }
