@@ -158,20 +158,7 @@ final class ListTests: XCTestCase {
 		
 		let expectedList = List<Character>(["a", "a", "a", "b", "b", "c", "c", "c", "d", "d", "d", "d"])
 		
-		var resultIterator = list.makeIterator()
-		var expectedIterator = expectedList.makeIterator()
-		
-		var resultElemOpt = resultIterator.next()
-		var expectedElemOpt = expectedIterator.next()
-		
-		while let resultElem = resultElemOpt, let expectedElem = expectedElemOpt {
-			XCTAssertEqual(resultElem, expectedElem)
-			resultElemOpt = resultIterator.next()
-			expectedElemOpt = expectedIterator.next()
-		}
-		
-		XCTAssertNil(resultElemOpt, "Result is longer than expected")
-		XCTAssertNil(expectedElemOpt, "Result is shorter than expected")
+		checkNoDiff(list, expectedList, testName: "testFlatMap")
 	}
 
 	func testFlatMapViaFoldLeft() {
@@ -182,20 +169,7 @@ final class ListTests: XCTestCase {
 		
 		let expectedList = List<Character>(["a", "a", "a", "b", "b", "c", "c", "c", "d", "d", "d", "d"])
 		
-		var resultIterator = list.makeIterator()
-		var expectedIterator = expectedList.makeIterator()
-		
-		var resultElemOpt = resultIterator.next()
-		var expectedElemOpt = expectedIterator.next()
-		
-		while let resultElem = resultElemOpt, let expectedElem = expectedElemOpt {
-			XCTAssertEqual(resultElem, expectedElem)
-			resultElemOpt = resultIterator.next()
-			expectedElemOpt = expectedIterator.next()
-		}
-		
-		XCTAssertNil(resultElemOpt, "Result is longer than expected")
-		XCTAssertNil(expectedElemOpt, "Result is shorter than expected")
+		checkNoDiff(list, expectedList, testName: "testFlatMap")
 	}
 
 	func testSum() {
@@ -219,9 +193,9 @@ final class ListTests: XCTestCase {
 		("testCopy", testCopy),
 		("testReversed", testReversed),
 		("testMap", testMap),
-		("testSum", testSum),
 		("testFlatMap", testFlatMap),
 		("testFlatMapViaFoldLeft", testFlatMapViaFoldLeft),
+		("testSum", testSum),
 	]
 }
 
@@ -243,6 +217,23 @@ extension ListTests {
 		return go(list, first)
 	}
 
+	func checkNoDiff(_ list: List<Character>, _ expectedList: List<Character>, testName:String) {
+		var resultIterator = list.makeIterator()
+		var expectedIterator = expectedList.makeIterator()
+		
+		var resultElemOpt = resultIterator.next()
+		var expectedElemOpt = expectedIterator.next()
+		
+		while let resultElem = resultElemOpt, let expectedElem = expectedElemOpt {
+			XCTAssertEqual(resultElem, expectedElem, "\(testName)")
+			resultElemOpt = resultIterator.next()
+			expectedElemOpt = expectedIterator.next()
+		}
+		
+		XCTAssertNil(resultElemOpt, "\(testName): Result is longer than expected")
+		XCTAssertNil(expectedElemOpt, "\(testName): Result is shorter than expected")
+	}
+	
 	// In general:
 	// function that receives method with type like foldRight(_:_)
 	//	func verifyFoldRights<A, B>(name: String, method: (List<A>) -> (B, (A, B) -> B) -> List<A>) -> List<A> {
