@@ -128,9 +128,7 @@ enum List<A> : Sequence {
 	}
 	
 	func filter(f: (A) -> Bool) -> List<A> {
-		foldRight(.end) { (elem: A, list: List<A>) -> List<A> in
-			f(elem) ? .node(head: elem, tail: list) : list
-		}
+		flatMap { f($0) ? .node(head: $0, tail: .end) : .end }
 	}
 }
 
