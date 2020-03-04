@@ -172,6 +172,12 @@ final class ListTests: XCTestCase {
 		checkNoDiff(list, expectedList, testName: "testFlatMap")
 	}
 
+	func testFilter() {
+		let list1 = List<Int>([11, 1, 11, 2, 11]).filter{ $0 < 10 }
+		let diff1 = diffNumIn(list1, first: 1, last: 2)
+		XCTAssertNil(diff1, "diff at num \(diff1!)")
+	}
+	
 	func testSum() {
 		XCTAssertEqual(0, List<Int>([]).sum(), "")
 		XCTAssertEqual(5, List<Int>([5]).sum(), "")

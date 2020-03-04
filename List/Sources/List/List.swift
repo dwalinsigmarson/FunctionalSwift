@@ -126,6 +126,12 @@ enum List<A> : Sequence {
 			f(a).append(list: tailList)
 		}
 	}
+	
+	func filter(f: (A) -> Bool) -> List<A> {
+		foldRight(.end) { (elem: A, list: List<A>) -> List<A> in
+			f(elem) ? .node(head: elem, tail: list) : list
+		}
+	}
 }
 
 struct ListIterator<A> : IteratorProtocol {
