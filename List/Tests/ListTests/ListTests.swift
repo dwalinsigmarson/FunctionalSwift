@@ -157,6 +157,37 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(diff, "diff at num \(diff!)")
 	}
 	
+	func testFlatMap() {
+		let list: List<Character> = List<(Character, Int)>([("a", 3), ("b", 2), ("c", 3), ("d", 4)]).flatMap {
+			let (char, num) = $0
+			return List<Character>([Character](repeating: char, count: num))
+		}
+		
+		let expectedList = List<Character>(["a", "a", "a", "b", "b", "c", "c", "c", "d", "d", "d", "d"])
+		
+		checkNoDiff(list, expectedList, testName: "testFlatMap")
+	}
+
+	func testFlatMapViaFoldLeft() {
+		let list: List<Character> = List<(Character, Int)>([("a", 3), ("b", 2), ("c", 3), ("d", 4)]).flatMapViaFoldLeft {
+			let (char, num) = $0
+			return List<Character>([Character](repeating: char, count: num))
+		}
+		
+		let expectedList = List<Character>(["a", "a", "a", "b", "b", "c", "c", "c", "d", "d", "d", "d"])
+		
+		checkNoDiff(list, expectedList, testName: "testFlatMap")
+	}
+
+	func testFilter() {
+		let list1 = List<Int>([11, 1, 11, 2, 11]).filter{ $0 < 10 }
+		let diff1 = diffNumIn(list1, first: 1, last: 2)
+		XCTAssertNil(diff1, "diff at num \(diff1!)")
+
+		let list2 = List<Int>([11, 11, 11]).filter{ $0 < 10 }
+		XCTAssertNil(list2.top)
+	}
+	
 	func testSum() {
 		XCTAssertEqual(0, List<Int>([]).sum(), "")
 		XCTAssertEqual(5, List<Int>([5]).sum(), "")
@@ -178,7 +209,10 @@ final class ListTests: XCTestCase {
 		("testCopy", testCopy),
 		("testReversed", testReversed),
 		("testMap", testMap),
-		("testSum", testSum)
+		("testFlatMap", testFlatMap),
+		("testFlatMapViaFoldLeft", testFlatMapViaFoldLeft),
+		("testFilter", testFilter),
+		("testSum", testSum),
 	]
 }
 
@@ -200,6 +234,23 @@ extension ListTests {
 		return go(list, first)
 	}
 
+	func checkNoDiff(_ list: List<Character>, _ expectedList: List<Character>, testName:String) {
+		var resultIterator = list.makeIterator()
+		var expectedIterator = expectedList.makeIterator()
+		
+		var resultElemOpt = resultIterator.next()
+		var expectedElemOpt = expectedIterator.next()
+		
+		while let resultElem = resultElemOpt, let expectedElem = expectedElemOpt {
+			XCTAssertEqual(resultElem, expectedElem, "\(testName)")
+			resultElemOpt = resultIterator.next()
+			expectedElemOpt = expectedIterator.next()
+		}
+		
+		XCTAssertNil(resultElemOpt, "\(testName): Result is longer than expected")
+		XCTAssertNil(expectedElemOpt, "\(testName): Result is shorter than expected")
+	}
+	
 	// In general:
 	// function that receives method with type like foldRight(_:_)
 	//	func verifyFoldRights<A, B>(name: String, method: (List<A>) -> (B, (A, B) -> B) -> List<A>) -> List<A> {

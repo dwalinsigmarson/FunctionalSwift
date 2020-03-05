@@ -103,9 +103,10 @@ enum List<A> : Sequence {
 		return self.foldLeft(Self.end, f: Self.node).foldLeft(b, f: f)
 	}
 
-	func append(list:List<A>) -> List<A> {
-		return self.foldRight(list) { (elem, list) -> List<A> in
-			return .node(head: elem, tail: list)
+	/// list parameter is shared with the result, self is copied
+	func append(list: List<A>) -> List<A> {
+		self.foldRight(list) { (elem, list) -> List<A> in
+			list.add(elem) // .node(head: elem, tail: list)
 		}
 	}
 
@@ -122,9 +123,19 @@ enum List<A> : Sequence {
 	}
 
 	func map<B>(f: (A) -> B) -> List<B> {
-		self.foldRight(List<B>.end) { (a: A, tail: List<B>) -> List<B> in
-			List<B>.node(head: f(a), tail:tail)
+		self.foldRight(List<B>.end) { (a: A, list: List<B>) -> List<B> in
+			list.add(f(a)) //	List<B>.node(head: f(a), tail:list)
 		}
+	}
+	
+	func flatMap<B>(f: (A) -> List<B>) -> List<B> {
+		self.foldRight(List<B>.end) { (a: A, tailList: List<B> ) -> List<B> in
+			f(a).append(list: tailList)
+		}
+	}
+	
+	func filter(f: (A) -> Bool) -> List<A> {
+		flatMap { f($0) ? .node(head: $0, tail: .end) : .end }
 	}
 }
 
@@ -160,6 +171,12 @@ extension List {
 				return accum(f(elem, b))
 			}
 		}(b)
+	}
+
+	func flatMapViaFoldLeft<B>(f: (A) -> List<B>) -> List<B> {
+		self.foldLeft(List<B>.end) { (a: A, list: List<B>) -> List<B> in
+			list.append(list: f(a))
+		}
 	}
 }
 
