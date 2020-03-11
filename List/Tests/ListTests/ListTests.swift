@@ -188,6 +188,17 @@ final class ListTests: XCTestCase {
 		XCTAssertNil(list2.top)
 	}
 	
+	func testZipWith() {
+		let list1 = List<Int>([1, 2, 3, 4])
+		let list2 = List<String>(["4", "5", "6"])
+		let result = zip(list1, list2) { (a: Int, b: String) -> Int in
+			(NumberFormatter().number(from: b)?.intValue ?? 0) + a
+		}
+
+		let expected = List<Int>([5, 7, 9])
+		checkNoDiff(result, expected, testName: "testZipWith")
+	}
+	
 	func testSum() {
 		XCTAssertEqual(0, List<Int>([]).sum(), "")
 		XCTAssertEqual(5, List<Int>([5]).sum(), "")
@@ -212,6 +223,7 @@ final class ListTests: XCTestCase {
 		("testFlatMap", testFlatMap),
 		("testFlatMapViaFoldLeft", testFlatMapViaFoldLeft),
 		("testFilter", testFilter),
+		("testZipWith", testZipWith),
 		("testSum", testSum),
 	]
 }
@@ -234,7 +246,7 @@ extension ListTests {
 		return go(list, first)
 	}
 
-	func checkNoDiff(_ list: List<Character>, _ expectedList: List<Character>, testName:String) {
+	func checkNoDiff<A>(_ list: List<A>, _ expectedList: List<A>, testName:String) where A: Equatable {
 		var resultIterator = list.makeIterator()
 		var expectedIterator = expectedList.makeIterator()
 		

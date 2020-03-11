@@ -139,6 +139,17 @@ enum List<A> : Sequence {
 	}
 }
 
+func zip<A, B, C>(_ listA: List<A>, _ listB: List<B>, with f: (A, B) -> C) -> List<C> {
+	switch (listA, listB) {
+	case (_, .end):
+		return .end
+	case (.end, _):
+		return .end
+	case (.node(let a, let tailA), .node(let b, let tailB)):
+		return .node(head: f(a, b), tail: zip(tailA, tailB, with: f))
+	}
+}
+
 struct ListIterator<A> : IteratorProtocol {
 	typealias Element = A
 	
