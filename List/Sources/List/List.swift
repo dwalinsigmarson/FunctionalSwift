@@ -166,6 +166,24 @@ struct ListIterator<A> : IteratorProtocol {
 	}
 }
 
+extension List where A: Equatable {
+	func hasSubsequence(_ list: List<A>) -> Bool {
+		let suffix = self.drop { (a: A) in
+			switch list {
+			case .end:
+				return false
+			case .node(a, _):
+				return false
+			default:
+				return true
+			}
+		}
+
+		let result = zip(list, suffix) { $0 == $1 }.foldLeft(true) { $0 && $1 }
+		return result
+	}
+}
+
 extension List {
 	func foldRightExplicit<B>(_ b: B, f: (A, B) -> B) -> B {
 		switch self {

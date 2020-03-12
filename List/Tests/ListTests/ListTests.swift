@@ -199,6 +199,20 @@ final class ListTests: XCTestCase {
 		checkNoDiff(result, expected, testName: "testZipWith")
 	}
 	
+	func testHasSubsequence() {
+		let list1 = List<Int>([1, 2, 3, 4, 5, 6, 7])
+		let subsequence1 = List<Int>([4, 5, 6])
+		XCTAssertTrue(list1.hasSubsequence(subsequence1))
+
+		let list2 = List<Int>([1, 2, 3, 4, 5, 6, 7])
+		let subsequence2 = List<Int>([1, 2, 3, 4, 5, 6, 7])
+		XCTAssertTrue(list2.hasSubsequence(subsequence2))
+
+		let list3 = List<Int>([1, 2, 3, 4, 5, 6, 7])
+		let subsequence3 = List<Int>([5, 5])
+		XCTAssertFalse(list3.hasSubsequence(subsequence3))
+	}
+	
 	func testSum() {
 		XCTAssertEqual(0, List<Int>([]).sum(), "")
 		XCTAssertEqual(5, List<Int>([5]).sum(), "")
@@ -224,6 +238,7 @@ final class ListTests: XCTestCase {
 		("testFlatMapViaFoldLeft", testFlatMapViaFoldLeft),
 		("testFilter", testFilter),
 		("testZipWith", testZipWith),
+		("testHasSubsequence", testHasSubsequence),
 		("testSum", testSum),
 	]
 }
