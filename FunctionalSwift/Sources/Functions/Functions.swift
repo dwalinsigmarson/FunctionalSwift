@@ -5,6 +5,10 @@
 //  Created by Dmytro Davydenko on 13.03.2020.
 //  Copyright © 2020 Dmytro Davydenko. All rights reserved.
 
-func curry(_ a: Int, _ b: Int) -> Int {
-	return a + b
+func curry<A, B, C>(_ f: @escaping (A, B) -> C) -> (A) -> (B) -> C {
+	return { (a: A) -> (B) -> C in
+		return { (b: B) -> C in
+			return f(a, b)
+		}
+	}
 }

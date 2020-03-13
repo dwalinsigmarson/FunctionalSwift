@@ -11,11 +11,19 @@ import XCTest
 final class FunctionsTests: XCTestCase {
 
 	func testCurry() {
-		XCTAssertEqual(curry(1, 2), 3)
+		func originalFunction(_ a: Int, _ b: String) -> String {
+			"\(b) is \(a)"
+		}
+
+		let curriedFunction = curry(originalFunction)
+
+		let arg1 = 10
+		let arg2 = "Length"
+		
+		XCTAssertEqual(curriedFunction(arg1)(arg2), originalFunction(arg1, arg2))
 	}
 	
 	static var allTests = [
 		("testCurry", testCurry),
 	]
-
 }
