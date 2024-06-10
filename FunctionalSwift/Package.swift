@@ -13,6 +13,9 @@ let package = Package(
         .library(
             name: "Functions",
             targets: ["Functions"]),
+		  .library(
+				name: "Errors",
+				targets: ["Errors"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -33,5 +36,11 @@ let package = Package(
         .testTarget(
             name: "FunctionsTests",
             dependencies: ["Functions"]),
+		  .target(
+				name: "Errors",
+				dependencies: []),
+		  .testTarget(
+				name: "ErrorsTests",
+				dependencies: ["Errors"]),
     ]
 )
