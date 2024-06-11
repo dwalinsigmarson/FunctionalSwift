@@ -7,8 +7,13 @@
 //
 
 import Foundation
+import Functions
 
-func map2<A, B, C>(a: A?, b: B?, f: (A, B) -> C) -> C? {
+func lift<A, B>(f: @escaping (A) -> B) -> (A?) -> B? {
+	return {	$0.map(f)	}
+}
+
+func map2<A, B, C>(_ a: A?, _ b: B?, f: (A, B) -> C) -> C? {
 	a.flatMap({ (a) -> C? in
 		b.flatMap { (b) -> C in
 			f(a, b)
