@@ -5,17 +5,9 @@
 //  Created by Dmytro Davydenko on 2/18/20.
 //  Copyright © 2020 Dmytro Davydenko. All rights reserved.
 
-enum List<A> : Sequence {
-	
+enum List<A> {
 	case end
 	indirect case node(head: A, tail: List<A>)
-	
-	init<T: Sequence>(_ sequence: T) where T.Element == A {
-		self = .end
-		sequence.reversed().forEach {
-			self = self.add($0)
-		}
-	}
 	
 	var top: A? {
 		switch self {
@@ -33,10 +25,6 @@ enum List<A> : Sequence {
 		case .node(_, let tail):
 			return tail
 		}
-	}
-	
-	func makeIterator() -> ListIterator<A> {
-		return ListIterator(list: self)
 	}
 	
 	func add(_ a: A) -> List<A> {
@@ -150,40 +138,6 @@ func zip<A, B, C>(_ listA: List<A>, _ listB: List<B>, with f: (A, B) -> C) -> Li
 	}
 }
 
-struct ListIterator<A> : IteratorProtocol {
-	typealias Element = A
-	
-	var list: List<A>
-	
-	mutating func next() -> A? {
-		switch list {
-		case .end:
-      	return nil
-		case .node(let head, let tail):
-			list = tail
-			return head
-		}
-	}
-}
-
-extension List where A: Equatable {
-	func hasSubsequence(_ list: List<A>) -> Bool {
-		let suffix = self.drop { (a: A) in
-			switch list {
-			case .end:
-				return false
-			case .node(a, _):
-				return false
-			default:
-				return true
-			}
-		}
-
-		let result = zip(list, suffix) { $0 == $1 }.foldLeft(true) { $0 && $1 }
-		return result
-	}
-}
-
 extension List {
 	func foldRightExplicit<B>(_ b: B, f: (A, B) -> B) -> B {
 		switch self {
@@ -209,8 +163,55 @@ extension List {
 	}
 }
 
+extension List where A: Equatable {
+	func hasSubsequence(_ list: List<A>) -> Bool {
+		let suffix = self.drop { (a: A) in
+			switch list {
+			case .end:
+				return false
+			case .node(a, _):
+				return false
+			default:
+				return true
+			}
+		}
+
+		let result = zip(list, suffix) { $0 == $1 }.foldLeft(true) { $0 && $1 }
+		return result
+	}
+}
+
 extension List where A: AdditiveArithmetic {
 	func sum() -> A {
 		return self.foldLeft(A.zero) { $0 + $1 }
+	}
+}
+
+extension List: Sequence {
+	struct ListIterator<B> : IteratorProtocol {
+		typealias Element = B
+
+		var list: List<B>
+
+		mutating func next() -> B? {
+			switch list {
+			case .end:
+				return nil
+			case .node(let head, let tail):
+				list = tail
+				return head
+			}
+		}
+	}
+
+	init<T: Sequence>(_ sequence: T) where T.Element == A {
+		self = .end
+		sequence.reversed().forEach {
+			self = self.add($0)
+		}
+	}
+
+	func makeIterator() -> ListIterator<A> {
+		return ListIterator(list: self)
 	}
 }
